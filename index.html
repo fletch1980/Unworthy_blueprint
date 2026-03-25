@@ -14,7 +14,6 @@ body{background:#07000f;font-family:system-ui,sans-serif;min-height:100vh;paddin
 .progress-card{background:#160028;border:1px solid #2a1845;border-radius:12px;padding:12px 16px;margin-bottom:14px;}
 .prog-bar-bg{background:#0a0015;border-radius:99px;height:7px;overflow:hidden;margin-top:6px;}
 .prog-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#7c3aed,#ec4899);box-shadow:0 0 8px rgba(124,58,237,.5);transition:width .5s;}
-/* PART SECTIONS */
 .part-trigger{width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#160028;border:1px solid #2a1845;border-radius:12px;cursor:pointer;text-align:left;transition:border-radius .2s;}
 .part-trigger.open{border-radius:12px 12px 0 0;}
 .part-items{display:none;background:#0a0018;border-radius:0 0 12px 12px;border:1px solid #2a1845;border-top:none;padding:4px 0;margin-bottom:10px;}
@@ -26,7 +25,6 @@ body{background:#07000f;font-family:system-ui,sans-serif;min-height:100vh;paddin
 .bp-title{font-size:13px;color:#ede8f5;line-height:1.4;}
 .bp-anchor{font-size:11px;color:#5a5070;margin-top:2px;}
 .status-btn{border-radius:8px;font-size:10px;padding:4px 8px;cursor:pointer;font-weight:700;white-space:nowrap;border:1px solid;flex-shrink:0;}
-/* NAV */
 .bot-nav{position:fixed;bottom:0;left:0;right:0;background:#0e0018;border-top:1px solid #2a1845;display:flex;z-index:100;max-width:480px;margin:0 auto;}
 .nav-btn{flex:1;padding:10px 4px 14px;border:none;background:none;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;border-top:2px solid transparent;text-decoration:none;color:#5a5070;}
 .nav-btn.current{color:#c084fc;border-top-color:#c084fc;}
@@ -40,13 +38,11 @@ body{background:#07000f;font-family:system-ui,sans-serif;min-height:100vh;paddin
   <p>52 letters · 4 parts · March 15 – December 31</p>
 </div>
 
-<!-- ENDING -->
 <div class="ending-card">
   <div style="font-size:10px;color:#f9a8d4;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Final Twelve Words</div>
   <div style="font-size:18px;color:#fff;font-style:italic;line-height:1.7;font-family:Georgia,serif;">"And for every broken piece of me,<br>I thank you."</div>
 </div>
 
-<!-- OVERALL PROGRESS -->
 <div class="progress-card">
   <div style="display:flex;justify-content:space-between;align-items:center;">
     <div style="font-size:12px;color:#9b90b0;">Letters written</div>
@@ -55,11 +51,10 @@ body{background:#07000f;font-family:system-ui,sans-serif;min-height:100vh;paddin
   <div class="prog-bar-bg"><div class="prog-bar-fill" id="writtenBar" style="width:0%;"></div></div>
 </div>
 
-<!-- PARTS -->
 <div id="partsContainer"></div>
 
 <nav class="bot-nav">
-  <a href="../ual-app" class="nav-btn"><span class="nav-icon">✦</span>Home</a>
+  <a href="https://fletch1980.github.io/Unworthy/" class="nav-btn"><span class="nav-icon">✦</span>Home</a>
   <div class="nav-btn current"><span class="nav-icon">☽</span>Blueprint</div>
 </nav>
 
@@ -138,9 +133,7 @@ var TOTAL_LETTERS=BP_PARTS.reduce(function(s,p){return s+p.items.length;},0);
 
 function gd(k,fb){try{var v=localStorage.getItem(k);return v?JSON.parse(v):fb;}catch(e){return fb;}}
 function sd(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
-
 function hexToRgb(hex){var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return r+','+g+','+b;}
-
 function getLetters(){return gd('ual_letters',{});}
 function setLetters(v){sd('ual_letters',v);}
 
@@ -156,14 +149,12 @@ function cycleStatus(pi,ii){
   var letters=getLetters(), k=pi+'-'+ii;
   letters[k]=STATUS_CYCLE[letters[k]||'not_started'];
   setLetters(letters);
-  // update just this button
   var btn=document.getElementById('sbtn-'+pi+'-'+ii);
   var st=letters[k];
   btn.textContent=STATUS_LABELS[st];
   btn.style.color=STATUS_COLORS[st];
   btn.style.borderColor='rgba('+hexToRgb(STATUS_COLORS[st])+',.4)';
   btn.style.background='rgba('+hexToRgb(STATUS_COLORS[st])+',.1)';
-  // update part count
   updatePartCount(pi);
   updateProgress();
 }
@@ -201,7 +192,6 @@ function render(){
         +'</div>'
       +'</button>'
       +'<div id="pitems-'+pi+'" class="part-items">';
-
     part.items.forEach(function(item,ii){
       var st=letters[pi+'-'+ii]||'not_started';
       var sc=STATUS_COLORS[st];
