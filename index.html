@@ -18,13 +18,16 @@ body{background:#07000f;font-family:system-ui,sans-serif;min-height:100vh;paddin
 .part-trigger.open{border-radius:12px 12px 0 0;}
 .part-items{display:none;background:#0a0018;border-radius:0 0 12px 12px;border:1px solid #2a1845;border-top:none;padding:4px 0;margin-bottom:10px;}
 .part-items.open{display:block;}
-.bp-item{display:flex;gap:10px;padding:10px 14px;border-bottom:1px solid #160028;align-items:center;}
+.bp-item{display:flex;gap:10px;padding:10px 14px;border-bottom:1px solid #160028;align-items:flex-start;}
 .bp-item:last-child{border-bottom:none;}
-.bp-num{font-size:11px;font-weight:700;min-width:24px;color:#3a3050;flex-shrink:0;}
+.bp-num{font-size:11px;font-weight:700;min-width:24px;color:#3a3050;flex-shrink:0;padding-top:2px;}
 .bp-info{flex:1;}
 .bp-title{font-size:13px;color:#ede8f5;line-height:1.4;}
 .bp-anchor{font-size:11px;color:#5a5070;margin-top:2px;}
-.status-btn{border-radius:8px;font-size:10px;padding:4px 8px;cursor:pointer;font-weight:700;white-space:nowrap;border:1px solid;flex-shrink:0;}
+.bp-days{font-size:10px;color:#3a3050;margin-top:3px;}
+.bp-write{font-size:10px;font-weight:700;color:#fbbf24;margin-top:3px;}
+.status-btn{border-radius:8px;font-size:10px;padding:4px 8px;cursor:pointer;font-weight:700;white-space:nowrap;border:1px solid;flex-shrink:0;margin-top:2px;}
+.write-star{font-size:14px;margin-right:4px;}
 .bot-nav{position:fixed;bottom:0;left:0;right:0;background:#0e0018;border-top:1px solid #2a1845;display:flex;z-index:100;max-width:480px;margin:0 auto;}
 .nav-btn{flex:1;padding:10px 4px 14px;border:none;background:none;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;border-top:2px solid transparent;text-decoration:none;color:#5a5070;}
 .nav-btn.current{color:#c084fc;border-top-color:#c084fc;}
@@ -35,7 +38,7 @@ body{background:#07000f;font-family:system-ui,sans-serif;min-height:100vh;paddin
 
 <div class="page-header">
   <h1>☽ Blueprint</h1>
-  <p>52 letters · 4 parts · April 27 – December 31</p>
+  <p>52 letters · 4 parts · May 4 – January 19, 2027</p>
 </div>
 
 <div class="ending-card">
@@ -51,6 +54,10 @@ body{background:#07000f;font-family:system-ui,sans-serif;min-height:100vh;paddin
   <div class="prog-bar-bg"><div class="prog-bar-fill" id="writtenBar" style="width:0%;"></div></div>
 </div>
 
+<div style="background:#1a1000;border:1px solid rgba(251,191,36,.25);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:#9b90b0;line-height:1.6;">
+  <span style="color:#fbbf24;font-weight:700;">★ Write Day</span> — the last day of each letter window. The verses you've been sitting with all week have done their work. Now write.
+</div>
+
 <div id="partsContainer"></div>
 
 <nav class="bot-nav">
@@ -59,70 +66,72 @@ body{background:#07000f;font-family:system-ui,sans-serif;min-height:100vh;paddin
 </nav>
 
 <script>
+var START=new Date(2026,4,4), TOTAL=291;
+
 var BP_PARTS=[
-  {name:'PART ONE: THE WOUND',sub:'How did it get inside me? · Letters 1–12',accent:'#ec4899',items:[
-    {n:'1', t:'You Were Wanted Before You Were Born',       a:'Psalm 139:13-16'},
-    {n:'2', t:'The Women Who Taught You Love',              a:'Lamentations 5:7'},
-    {n:'3', t:'The Father Who Didn\'t Stay',                a:'Psalm 27:10'},
-    {n:'4', t:'Performing for Your Mother\'s Approval',     a:'Isaiah 49:15'},
-    {n:'5', t:'Making Yourself Small',                      a:'Matthew 5:14-16'},
-    {n:'6', t:'The First Time Love Left',                   a:'Deuteronomy 31:6'},
-    {n:'7', t:'The Church and the Wound',                   a:'Romans 8:1'},
-    {n:'8', t:'Confusing Intensity for Intimacy',           a:'1 Corinthians 13:4-7'},
-    {n:'9', t:'The Secret You Kept',                        a:'Psalm 34:18'},
-    {n:'10',t:'Watching Other Daughters Be Chosen',         a:'Isaiah 43:4'},
-    {n:'11',t:'Running Before They Could Leave',            a:'1 John 4:18'},
-    {n:'12',t:'Arriving at Adulthood Already Broken',       a:'Isaiah 61:1-3'},
-    {n:'★', t:'WOUND LETTER 1 — I See Where You Came From',a:'Genesis 50:20',wound:true}
+  {name:'PART ONE: THE WOUND',sub:'Where it started · Letters 1–12',accent:'#ec4899',items:[
+    {n:'1', t:'You Were Wanted Before You Were Born',       a:'Psalm 139:1-6 · 139:13-16 · Jeremiah 1:4-5 · Isaiah 44:2', days:[1,5],   write:5},
+    {n:'2', t:'The Women Who Taught You Love',              a:'Lamentations 5:7 · Ruth 1:16-17',                            days:[6,12],  write:12},
+    {n:'3', t:'The Father Who Didn\'t Stay',                a:'Psalm 27:10 · Psalm 68:5',                                   days:[13,19], write:19},
+    {n:'4', t:'Performing for Your Mother\'s Approval',     a:'Isaiah 49:15 · Isaiah 49:16 · Zephaniah 3:17',               days:[20,26], write:26},
+    {n:'5', t:'Making Yourself Small',                      a:'Matthew 5:14-16 · Proverbs 29:25',                           days:[27,32], write:32},
+    {n:'6', t:'The First Time Love Left',                   a:'Deuteronomy 31:6',                                           days:[33,39], write:39},
+    {n:'7', t:'The Church and the Wound',                   a:'Romans 8:1 · Romans 8:38-39',                                days:[40,47], write:47},
+    {n:'8', t:'Confusing Intensity for Intimacy',           a:'1 Corinthians 13:4-7',                                       days:[48,54], write:54},
+    {n:'9', t:'The Secret You Kept',                        a:'Psalm 34:18',                                                days:[55,61], write:61},
+    {n:'10',t:'Watching Other Daughters Be Chosen',         a:'Isaiah 43:4',                                                days:[62,67], write:67},
+    {n:'11',t:'Running Before They Could Leave',            a:'1 John 4:18',                                                days:[68,74], write:74},
+    {n:'12',t:'Arriving at Adulthood Already Broken',       a:'Isaiah 61:1-3',                                              days:[75,81], write:81},
+    {n:'★', t:'WOUND LETTER 1 — I See Where You Came From',a:'Genesis 50:20',                                              days:[82,84], write:84, wound:true}
   ]},
-  {name:'PART TWO: THE DAMAGE',sub:'What did it cost me? · Letters 13–25',accent:'#c084fc',items:[
-    {n:'13',t:'The Men You Chose',                          a:'Hosea 2:14'},
-    {n:'14',t:'Abandoning Your Own Projects',               a:'Philippians 1:6'},
-    {n:'15',t:'Seeking Validation Online',                  a:'Matthew 6:1-4'},
-    {n:'16',t:'The Marriage Where You Disappeared',         a:'Ezekiel 36:26'},
-    {n:'17',t:'Chasing Unavailable Men',                    a:'Psalm 4:2'},
-    {n:'18',t:'Performing Strength You Didn\'t Feel',       a:'2 Corinthians 12:9'},
-    {n:'19',t:'Giving Your Body When Your Heart Was Gone',  a:'1 Corinthians 6:19-20'},
-    {n:'20',t:'Staying Too Long',                           a:'Isaiah 43:18-19'},
-    {n:'21',t:'Leaving Too Fast',                           a:'Proverbs 28:1'},
-    {n:'22',t:'Dimming Your Gifts',                         a:'Matthew 5:14-16'},
-    {n:'23',t:'Mistaking Counterfeit Love',                 a:'1 John 4:1'},
-    {n:'24',t:'Stopping Trusting Yourself',                 a:'Proverbs 3:5-6'},
-    {n:'25',t:'The Darkest Place',                          a:'Psalm 34:18'},
-    {n:'★', t:'WOUND LETTER 2 — Look at What You\'ve Done', a:'Psalm 139:23-24',wound:true}
+  {name:'PART TWO: THE DAMAGE',sub:'How it grew · Letters 13–25',accent:'#c084fc',items:[
+    {n:'13',t:'The Men You Chose',                          a:'Hosea 2:14',                                                 days:[85,92],   write:92},
+    {n:'14',t:'Abandoning Your Own Projects',               a:'Philippians 1:6',                                            days:[93,99],   write:99},
+    {n:'15',t:'Seeking Validation Online',                  a:'Matthew 6:1-4',                                              days:[100,106], write:106},
+    {n:'16',t:'The Marriage Where You Disappeared',         a:'Ezekiel 36:26',                                              days:[107,114], write:114},
+    {n:'17',t:'Chasing Unavailable Men',                    a:'Psalm 4:2',                                                  days:[115,121], write:121},
+    {n:'18',t:'Performing Strength You Didn\'t Feel',       a:'2 Corinthians 12:9',                                         days:[122,128], write:128},
+    {n:'19',t:'Giving Your Body When Your Heart Was Gone',  a:'1 Corinthians 6:19-20',                                      days:[129,136], write:136},
+    {n:'20',t:'Staying Too Long',                           a:'Isaiah 43:18-19',                                            days:[137,143], write:143},
+    {n:'21',t:'Leaving Too Fast',                           a:'Proverbs 28:1',                                              days:[144,149], write:149},
+    {n:'22',t:'Dimming Your Gifts',                         a:'Matthew 5:14-16',                                            days:[150,156], write:156},
+    {n:'23',t:'Mistaking Counterfeit Love',                 a:'1 John 4:1',                                                 days:[157,163], write:163},
+    {n:'24',t:'Stopping Trusting Yourself',                 a:'Proverbs 3:5-6',                                             days:[164,170], write:170},
+    {n:'25',t:'The Darkest Place',                          a:'Psalm 34:18',                                                days:[171,178], write:178},
+    {n:'★', t:'WOUND LETTER 2 — Look at What You\'ve Done', a:'Psalm 139:23-24',                                           days:[179,182], write:182, wound:true}
   ]},
-  {name:'PART THREE: THE TURNING',sub:'When did I start choosing myself? · Letters 26–38',accent:'#34d399',items:[
-    {n:'26',t:'The Gift of Exhaustion',                     a:'Matthew 11:28-30'},
-    {n:'27',t:'Hearing God in the Quiet',                   a:'1 Kings 19:11-12'},
-    {n:'28',t:'Picking Up the Pen',                         a:'Habakkuk 2:2'},
-    {n:'29',t:'Choosing to Stay (With Yourself)',           a:'Psalm 46:10'},
-    {n:'30',t:'Seeing the Wound Clearly',                   a:'John 8:32'},
-    {n:'31',t:'Stopping the Chase',                         a:'Psalm 62:5-6'},
-    {n:'32',t:'Letting Someone Actually Love You',          a:'1 John 4:19'},
-    {n:'33',t:'Coming Back to Your Calling',                a:'Joel 2:25'},
-    {n:'34',t:'Forgiving Your Mother',                      a:'Colossians 3:13'},
-    {n:'35',t:'Forgiving Your Father',                      a:'Luke 15:20'},
-    {n:'36',t:'Trusting Your Instincts Again',              a:'Isaiah 30:21'},
-    {n:'37',t:'Choosing Work Over the Wound',               a:'Colossians 3:23'},
-    {n:'38',t:'Letting Yourself Be Proud',                  a:'Galatians 6:4'},
-    {n:'★', t:'WOUND LETTER 3 — I Notice You\'re Losing Your Grip',a:'Romans 6:6-7',wound:true}
+  {name:'PART THREE: THE TURNING',sub:'How it almost broke you · Letters 26–38',accent:'#34d399',items:[
+    {n:'26',t:'The Gift of Exhaustion',                     a:'Matthew 11:28-30',                                           days:[183,190], write:190},
+    {n:'27',t:'Hearing God in the Quiet',                   a:'1 Kings 19:11-12',                                           days:[191,197], write:197},
+    {n:'28',t:'Picking Up the Pen',                         a:'Habakkuk 2:2',                                               days:[198,203], write:203},
+    {n:'29',t:'Choosing to Stay (With Yourself)',           a:'Psalm 46:10',                                                days:[204,209], write:209},
+    {n:'30',t:'Seeing the Wound Clearly',                   a:'John 8:32',                                                  days:[210,215], write:215},
+    {n:'31',t:'Stopping the Chase',                         a:'Psalm 62:5-6',                                               days:[216,221], write:221},
+    {n:'32',t:'Letting Someone Actually Love You',          a:'1 John 4:19',                                                days:[222,227], write:227},
+    {n:'33',t:'Coming Back to Your Calling',                a:'Joel 2:25',                                                  days:[228,232], write:232},
+    {n:'34',t:'Forgiving Your Mother',                      a:'Colossians 3:13',                                            days:[233,237], write:237},
+    {n:'35',t:'Forgiving Your Father',                      a:'Luke 15:20',                                                 days:[238,242], write:242},
+    {n:'36',t:'Trusting Your Instincts Again',              a:'Isaiah 30:21',                                               days:[243,246], write:246},
+    {n:'37',t:'Choosing Work Over the Wound',               a:'Colossians 3:23',                                            days:[247,249], write:249},
+    {n:'38',t:'Letting Yourself Be Proud',                  a:'Galatians 6:4',                                              days:[250,251], write:251},
+    {n:'★', t:'WOUND LETTER 3 — I Notice You\'re Losing Your Grip',a:'Romans 6:6-7',                                       days:[252,252], write:252, wound:true}
   ]},
-  {name:'PART FOUR: THE RECLAMATION',sub:'Who am I when I am free? · Letters 39–52',accent:'#fbbf24',items:[
-    {n:'39',t:'Learning to Receive',                        a:'John 1:16'},
-    {n:'40',t:'You Finished Something',                     a:'2 Timothy 4:7'},
-    {n:'41',t:'Creativity as Calling, Not Coping',          a:'Exodus 35:31-32'},
-    {n:'42',t:'Loving Without Losing Yourself',             a:'Mark 12:31'},
-    {n:'43',t:'Living Faith, Not Performing It',            a:'Micah 6:8'},
-    {n:'44',t:'No Longer Easy to Manipulate',               a:'Matthew 10:16'},
-    {n:'45',t:'Choosing Yourself in Arkansas',              a:'Ruth 1:16'},
-    {n:'46',t:'Teaching What You Survived',                 a:'2 Corinthians 1:4'},
-    {n:'47',t:'Letting the Photographs Tell the Truth',     a:'Psalm 19:1'},
-    {n:'48',t:'No Longer Afraid of Your Own Depth',         a:'Psalm 36:9'},
-    {n:'49',t:'Making Peace With the Women in Your Family', a:'Proverbs 31:25'},
-    {n:'50',t:'Beginning to Believe You Are Worth Loving',  a:'Ephesians 3:17-19'},
-    {n:'51',t:'To the Woman Who Stayed',                    a:'James 1:4'},
-    {n:'★', t:'WOUND LETTER 4 — It Is Time',               a:'Galatians 5:1',wound:true},
-    {n:'♥', t:'LETTER 52 — THE BEDSIDE GOODBYE',           a:'Psalm 139:13-16',final:true}
+  {name:'PART FOUR: THE RECLAMATION',sub:'How love found you anyway · Letters 39–52',accent:'#fbbf24',items:[
+    {n:'39',t:'Learning to Receive',                        a:'John 1:16',                                                  days:[253,256], write:256},
+    {n:'40',t:'You Finished Something',                     a:'2 Timothy 4:7',                                              days:[257,260], write:260},
+    {n:'41',t:'Creativity as Calling, Not Coping',          a:'Exodus 35:31-32',                                            days:[261,263], write:263},
+    {n:'42',t:'Loving Without Losing Yourself',             a:'Mark 12:31',                                                 days:[264,266], write:266},
+    {n:'43',t:'Living Faith, Not Performing It',            a:'Micah 6:8',                                                  days:[267,269], write:269},
+    {n:'44',t:'No Longer Easy to Manipulate',               a:'Matthew 10:16',                                              days:[270,272], write:272},
+    {n:'45',t:'Choosing Yourself in Arkansas',              a:'Ruth 1:16',                                                  days:[273,275], write:275},
+    {n:'46',t:'Teaching What You Survived',                 a:'2 Corinthians 1:4',                                          days:[276,278], write:278},
+    {n:'47',t:'Letting the Photographs Tell the Truth',     a:'Psalm 19:1',                                                 days:[279,280], write:280},
+    {n:'48',t:'No Longer Afraid of Your Own Depth',         a:'Psalm 36:9',                                                 days:[281,282], write:282},
+    {n:'49',t:'Making Peace With the Women in Your Family', a:'Proverbs 31:25',                                             days:[283,284], write:284},
+    {n:'50',t:'Beginning to Believe You Are Worth Loving',  a:'Ephesians 3:17-19',                                          days:[285,286], write:286},
+    {n:'51',t:'To the Woman Who Stayed',                    a:'James 1:4',                                                  days:[287,288], write:288},
+    {n:'★', t:'WOUND LETTER 4 — It Is Time',               a:'Galatians 5:1',                                              days:[289,290], write:290, wound:true},
+    {n:'♥', t:'LETTER 52 — THE BEDSIDE GOODBYE',           a:'Psalm 139:13-16',                                            days:[291,291], write:291, final:true}
   ]}
 ];
 
@@ -136,6 +145,17 @@ function sd(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 function hexToRgb(hex){var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return r+','+g+','+b;}
 function getLetters(){return gd('ual_letters',{});}
 function setLetters(v){sd('ual_letters',v);}
+
+function dayNumToDate(dn){
+  var d=new Date(START.getFullYear(),START.getMonth(),START.getDate()+dn-1);
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+
+function getCurrentDayNum(){
+  var now=new Date();
+  var today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  return Math.max(1,Math.min(Math.floor((today-START)/86400000)+1,TOTAL));
+}
 
 function updateProgress(){
   var letters=getLetters();
@@ -177,7 +197,7 @@ function togglePart(pi){
 }
 
 function render(){
-  var letters=getLetters(), html='';
+  var letters=getLetters(), dn=getCurrentDayNum(), html='';
   BP_PARTS.forEach(function(part,pi){
     var written=part.items.filter(function(_,ii){return(letters[pi+'-'+ii]||'not_started')==='written';}).length;
     html+='<div style="margin-bottom:2px;">'
@@ -197,11 +217,23 @@ function render(){
       var sc=STATUS_COLORS[st];
       var numColor=item.wound?'#fbbf24':item.final?'#ec4899':'#3a3050';
       var titleColor=item.wound?'#fbbf24':item.final?'#f9a8d4':'#ede8f5';
-      html+='<div class="bp-item">'
-        +'<div class="bp-num" style="color:'+numColor+';">'+item.n+'</div>'
+      var isCurrentLetter=dn>=item.days[0]&&dn<=item.days[1];
+      var isWriteDay=dn===item.write;
+      var isPast=dn>item.days[1];
+      var isFuture=dn<item.days[0];
+      var dayRange=dayNumToDate(item.days[0])+(item.days[0]!==item.days[1]?' – '+dayNumToDate(item.days[1]):'');
+      var writeDate=dayNumToDate(item.write);
+
+      html+='<div class="bp-item" style="'+(isCurrentLetter?'background:rgba(124,58,237,.1);':'')+'">'
+        +'<div class="bp-num" style="color:'+numColor+';">'+(isWriteDay?'<span class="write-star">★</span>':'')+item.n+'</div>'
         +'<div class="bp-info">'
-          +'<div class="bp-title" style="color:'+titleColor+';">'+item.t+'</div>'
+          +'<div class="bp-title" style="color:'+titleColor+';">'
+            +(isCurrentLetter?'<span style="font-size:9px;font-weight:700;color:#7c3aed;background:rgba(124,58,237,.2);border-radius:4px;padding:1px 5px;margin-right:4px;">NOW</span>':'')
+            +item.t
+          +'</div>'
           +'<div class="bp-anchor">'+item.a+'</div>'
+          +'<div class="bp-days" style="color:'+(isCurrentLetter?'#c084fc':isPast?'#2a1845':'#3a3050')+';">'+dayRange+'</div>'
+          +(item.write?'<div class="bp-write">★ Write: '+writeDate+'</div>':'')
         +'</div>'
         +'<button id="sbtn-'+pi+'-'+ii+'" class="status-btn" onclick="cycleStatus('+pi+','+ii+')" '
           +'style="color:'+sc+';border-color:rgba('+hexToRgb(sc)+',.4);background:rgba('+hexToRgb(sc)+',.1);">'
